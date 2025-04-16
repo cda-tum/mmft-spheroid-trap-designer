@@ -1,0 +1,18 @@
+
+  FoamFile
+  {
+    version 2.0;
+    format ascii;
+    class dictionary;
+    location "constant";
+    object momentumTransport;
+  }
+
+    simulationType laminar;
+
+    RAS
+    {
+      RASModel laminar;
+      turbulence off;
+      printCoeffs off;
+    }

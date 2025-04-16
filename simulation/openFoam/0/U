@@ -1,0 +1,49 @@
+
+    FoamFile
+    {
+        version     2.0;
+        format      ascii;
+        class       volVectorField;
+        location    "0";
+        object      U;
+    }
+
+    dimensions      [0 1 -1 0 0 0 0];
+    internalField   uniform (0 0 0);
+
+    boundaryField
+    {
+        allBoundary
+        {
+            type            noSlip;
+        }
+        walls
+        {
+            type            noSlip;
+        }
+        inlet
+        {
+            // type                flowRateInletVelocity;
+            // volumetricFlowRate  1e-5;
+            // extrapolateProfile  true;
+            type            fixedValue;
+            value           uniform (1e-3 0 0);
+        }
+
+        outlet
+        {
+            type            fixedValue;
+            value           uniform (1e-3 0 0);
+        }
+
+        // walls
+        // {
+        //     type            noSlip;
+        // }
+
+        // geometry // maybe change this to top and bottom, or remove it
+        // {
+        //     type            noSlip;
+        // }
+    }
+    
