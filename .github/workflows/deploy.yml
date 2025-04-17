@@ -1,0 +1,80 @@
+name: Deploy Code
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+  KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
+  CDA_HOST_NAME: tueicda-cda.srv.mwn.de
+  CDA_USER_NAME: web-user
+  CDA_TARGET_DIR: /var/www/cda/app/mmft-spheroid-trap/
+
+jobs:
+  build:
+    name: Validate & Install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+  deploy_to_server:
+    name: Upload to server
+    needs: build
+    if: github.event_name == 'release' && github.event.action == 'published'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create version file
+        run: |
+          echo "version = \"$(git describe --tags --always)\"" > mmft-spheroid-trap_version.txt
+
+      - name: Set up SSH access
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz \
+            --exclude=".git/" --exclude="venv/" \
+            --delete \
+            -e "ssh -i ~/.ssh/id_rsa" \ 
+            . ${CDA_USER_NAME}@${CDA_HOST_NAME}:${CDA_TARGET_DIR}
+
+      - name: Install deps & restart service
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=yes \
+            ${CDA_USER_NAME}@${CDA_HOST_NAME} << 'EOF'
+            cd ${CDA_TARGET_DIR}
+            if [ -f venv/bin/activate ]; then
+              source venv/bin/activate
+            fi
+            pip install --upgrade -r requirements.txt
+            sudo systemctl restart mmft-spheroid-trap-designer
+            EOF
