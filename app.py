@@ -26,12 +26,12 @@ app = Flask(
 PREFIX = "/mmft-spheroid-trap-designer/"
 
 # Route to serve the main page
-@app.route('/')
+@app.route(f"{PREFIX}/")
 def index():
     return render_template('index.html')
 
 # Endpoint to handle the computation
-@app.route('/compute', methods=['POST'])
+@app.route(f"{PREFIX}/compute", methods=['POST'])
 def compute():
     data = request.json
     spheroid_diameter = data.get('spheroid_diameter')
@@ -89,21 +89,21 @@ def compute():
                     'stl_filename': 'output3D.stl'})
 
 # Serve the SVG file
-@app.route('/svg/<output_id>/output2D.svg')
+@app.route(f"{PREFIX}/svg/<output_id>/output2D.svg")
 def get_svg(output_id):
     file_path = os.path.join(app.static_folder, 'outputs', output_id, 'output2D.svg')
     if not os.path.exists(file_path):
         return "File not found", 404
     return send_file(file_path, mimetype='image/svg+xml')
 
-@app.route('/dxf/<output_id>/output2D.dxf')
+@app.route(f"{PREFIX}/dxf/<output_id>/output2D.dxf)
 def get_dxf(output_id):
     file_path = os.path.join(app.static_folder, 'outputs', output_id, 'output2D.dxf')
     if not os.path.exists(file_path):
         return "File not found", 404
     return send_file(file_path, mimetype='application/dxf')
 
-@app.route('/stl/<output_id>/output3D.stl')
+@app.route(f"{PREFIX}/stl/<output_id>/output3D.stl")
 def get_stl(output_id):
     file_path = os.path.join(app.static_folder, 'outputs', output_id, 'output3D.stl')
     print(f"Serving STL file: {file_path}")
