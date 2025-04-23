@@ -35,6 +35,6 @@ You can adapt the parameters in the same script.
 
 <p align="center">
   <picture>
-    <img src="https://raw.githubusercontent.com/cda-tum/mmft-spheroid-trap-designer/main/interface/tum_x_ceaLeti.png" width="90%">
+    <img src="interface/tum_x_ceaLeti.png" alt="TUM × CEA-Leti" width="90%">
   </picture>
 </p>
