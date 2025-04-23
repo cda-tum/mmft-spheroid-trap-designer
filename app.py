@@ -96,7 +96,7 @@ def get_svg(output_id):
         return "File not found", 404
     return send_file(file_path, mimetype='image/svg+xml')
 
-@app.route(f"{PREFIX}/dxf/<output_id>/output2D.dxf)
+@app.route(f"{PREFIX}/dxf/<output_id>/output2D.dxf")
 def get_dxf(output_id):
     file_path = os.path.join(app.static_folder, 'outputs', output_id, 'output2D.dxf')
     if not os.path.exists(file_path):
