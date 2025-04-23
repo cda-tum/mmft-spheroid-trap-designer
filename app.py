@@ -116,8 +116,10 @@ def start_server(
     activate_logging: bool = False,
     target_location: str | None = None,
     debug_flag: bool = False,
-) -> None:
+) -> Flask:
     """Start the server."""
+    # disable Flask’s own banner under Gunicorn
+    cli.show_server_banner = lambda *_args: None
     # if not target_location:
     #     target_location = str(resources.files("mmft.spheroid-trap-designer") / "static" / "files")
 
@@ -126,20 +128,22 @@ def start_server(
     #     skip_question=skip_question,
     #     activate_logging=activate_logging,
     # )
-    print(
-        "Server is hosted at: http://127.0.0.1:5000" + PREFIX + ".",
-        "To stop it, interrupt the process (e.g., via CTRL+C). \n",
-    )
+    # print(
+    #     "Server is hosted at: http://127.0.0.1:5000" + PREFIX + ".",
+    # )
 
-    # This line avoid the startup-message from flask
-    cli.show_server_banner = lambda *_args: None
+    # # This line avoid the startup-message from flask
+    # cli.show_server_banner = lambda *_args: None
 
-    # if not activate_logging:
-    #     log = logging.getLogger("werkzeug")
-    #     log.disabled = True
+    # # if not activate_logging:
+    # #     log = logging.getLogger("werkzeug")
+    # #     log.disabled = True
 
-    app.run(debug=debug_flag)
+    # app.run(debug=debug_flag)
+    return app
 
 
 if __name__ == "__main__":
-    start_server(debug_flag=True)
+    # Local dev: run Flask’s built-in server on 0.0.0.0:5002
+    cli.show_server_banner = lambda *_args: None
+    app.run(host="0.0.0.0", port=5002, debug=True)

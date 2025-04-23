@@ -513,7 +513,7 @@
       const channel_negative = document.getElementById('geometryToggle').checked; // boolean value
 
       try {
-        const response = await fetch('/compute', {
+        const response = await fetch('compute', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -539,20 +539,20 @@
         // svgImage.style.display = 'block';
 
         // Load STL into the viewer
-        loadSTL(`/stl/${data.output_id}/${data.stl_filename}`);
+        loadSTL(`stl/${data.output_id}/${data.stl_filename}`);
 
         // Enable and set download buttons
         const downloadButtons = document.getElementById('downloadButtons');
         downloadButtons.style.display = 'block'; // Show buttons
 
         const downloadSTL = document.getElementById('downloadSTL');
-        downloadSTL.href = `/stl/${data.output_id}/${data.stl_filename}`; // Set STL download link
+        downloadSTL.href = `stl/${data.output_id}/${data.stl_filename}`; // Set STL download link
 
         const downloadDXF = document.getElementById('downloadDXF');
-        downloadDXF.href = `/dxf/${data.output_id}/${data.dxf_filename}`; // Set STL download link
+        downloadDXF.href = `dxf/${data.output_id}/${data.dxf_filename}`; // Set STL download link
 
         const downloadSVG = document.getElementById('downloadSVG');
-        downloadSVG.href = `/svg/${data.output_id}/${data.svg_filename}`; 
+        downloadSVG.href = `svg/${data.output_id}/${data.svg_filename}`; 
         
       } catch (error) {
         console.error('Error:', error);
