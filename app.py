@@ -18,12 +18,14 @@ import spheroid_all
 # else:
 #     from importlib import resources
 
+PREFIX = "/mmft-spheroid-trap-designer/"
 app = Flask(
     __name__,
-    template_folder="interface",  # Template folder for HTML
-    static_folder="interface/static"  # Static folder for CSS, JS, images
+    static_url_path=PREFIX.rstrip("/"),
+    template_folder="interface",
+    static_folder="interface/static"
 )
-PREFIX = "/mmft-spheroid-trap-designer/"
+
 
 # Route to serve the main page
 @app.route(f"{PREFIX}/")
