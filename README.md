@@ -6,7 +6,7 @@
 
 The MMFT spheroid-trap designer is a tool that generates a microfluidic chip and/or channel design for trapping spheroids based on hydrodynamic principles in a dedicated location on a chip, by employing a SAT solver to optimize the design process and automatically compute the required parameters while adhering to ISO guidelines. It is possible to chain several traps together and thereby trap several spheroids. These traps are especially useful for studying complex biological processes such as the vascularization of spheroids and organoids [1].
 
-The tool is available online: [https://www.cda.cit.tum.de/app/mmft-spheroid-trap-designer/](https://www.cda.cit.tum.de/app/mmft-TODO/).
+The tool is available online: [https://www.cda.cit.tum.de/mmft-spheroid-trap-desiger](https://www.cda.cit.tum.de/mmft-spheroid-trap-designer/).
 It is part of the [Munich Microfluidics Toolkit (MMFT)](https://www.cda.cit.tum.de/research/microfluidics/munich-microfluidics-toolkit/) by the [Chair for Design Automation](https://www.cda.cit.tum.de/) at the Technical University of Munich.
 
 If you have any questions about the fabrication and the trapping experiments feel free to contact us at microfab@cea.fr.
@@ -35,6 +35,6 @@ You can adapt the parameters in the same script.
 
 <p align="center">
   <picture>
-    <img src="interface/tum_x_ceaLeti.png" alt="TUM × CEA-Leti" width="90%">
+    <img src="interface/tum_x_ceaLeti.png" alt="TUM × CEA-Leti" width="60%">
   </picture>
 </p>
