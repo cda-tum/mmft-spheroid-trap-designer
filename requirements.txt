@@ -1,6 +1,6 @@
 # Packages required to run the spheroid-trap design
 flask==2.3.3
-numpy==2.1.1
+numpy>=1.26,<2.0
 numpy-stl==3.1.1
 matplotlib==3.9.2
 z3-solver==4.13.0.0
