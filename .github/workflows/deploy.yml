@@ -15,7 +15,7 @@ env:
   KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
   CDA_HOST_NAME: tueicda-cda.srv.mwn.de
   CDA_USER_NAME: web-user
-  CDA_TARGET_DIR: /var/www/cda/app/mmft-spheroid-trap/
+  CDA_TARGET_DIR: /var/www/cda/app/mmft-spheroid-trap-designer/
 
 jobs:
   build:
