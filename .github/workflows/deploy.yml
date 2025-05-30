@@ -60,6 +60,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
       - name: Deploy via rsync
+        working-directory: mmft-spheroid-trap-designer
         run: |
           rsync -avz \
             --exclude=".git/" --exclude="venv/" \
