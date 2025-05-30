@@ -60,12 +60,11 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
       - name: Deploy via rsync
-        working-directory: mmft-spheroid-trap-designer
         run: |
           rsync -avz \
             --exclude=".git/" --exclude="venv/" \
             --delete \
-            -e "ssh -i ~/.ssh/id_rsa" \ 
+            -e "ssh -i ~/.ssh/id_rsa" \
             . ${CDA_USER_NAME}@${CDA_HOST_NAME}:${CDA_TARGET_DIR}
 
       - name: Install deps & restart service
