@@ -5,6 +5,7 @@ on:
     types: [published]
   push:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -39,7 +40,9 @@ jobs:
   deploy_to_server:
     name: Upload to server
     needs: build
-    if: github.event_name == 'release' && github.event.action == 'published'
+    if: >
+      (github.event_name == 'release' && github.event.action == 'published')
+      || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
@@ -75,7 +78,7 @@ jobs:
 
       - name: Create virtualenv & install dependencies on server
         run: |
-          ssh -i ~/.ssh/my_rsync_key -o StrictHostKeyChecking=yes ${CDA_USER_NAME}@${CDA_HOST_NAME} << 'EOF'
+          ssh -i ~/.ssh/my_rsync_key -o StrictHostKeyChecking=yes ${CDA_USER_NAME}@${CDA_HOST_NAME} << EOF
             set -e
 
             APP_DIR="${CDA_TARGET_DIR}"
