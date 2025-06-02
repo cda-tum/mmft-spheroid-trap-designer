@@ -55,9 +55,10 @@ jobs:
       - name: Set up SSH access
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.KNOWN_HOSTS }}" >> ~/.ssh/known_hostsAdd commentMore actions
-          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${KNOWN_HOSTS}" >> ~/.ssh/known_hosts
+          echo "${DEPLOY_KEY}" > ~/.ssh/my_rsync_key
+          echo "IdentityFile ~/.ssh/my_rsync_key" >> ~/.ssh/config
+          chmod -R 700 ~/.ssh
 
       - name: Deploy via rsync
         run: |
