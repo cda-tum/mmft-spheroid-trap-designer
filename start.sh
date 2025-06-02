@@ -3,15 +3,6 @@
 # Absolute path to your repo (adjust if needed)
 APP_DIR="/var/www/cda/app/mmft-spheroid-trap-designer"
 
-if [ ! -d "$APP_DIR/trap-designer" ]; then
-  python3 -m venv "$APP_DIR/trap-designer"
-  source "$APP_DIR/trap-designer/bin/activate"
-  pip install --upgrade pip
-  pip install -r "$APP_DIR/requirements.txt"
-else
-  source "$APP_DIR/trap-designer/bin/activate"
-fi
-
 # Activate virtual environment
 source "$APP_DIR/trap-designer/bin/activate"
 
