@@ -63,6 +63,41 @@ jobs:
           echo "IdentityFile ~/.ssh/my_rsync_key" >> ~/.ssh/config
           chmod 600 ~/.ssh/config
 
-      - name: Deploy via rsync
+      - name: Sync all application files (excluding version file)
         run: |
-          rsync -avz --exclude=".git/" --exclude="venv/" --delete -e "ssh -i ~/.ssh/my_rsync_key" . ${CDA_USER_NAME}@${CDA_HOST_NAME}:${CDA_TARGET_DIR}
+          rsync -avz \
+            --exclude="mmft-spheroid-trap_version.txt" \
+            --exclude=".git/" \
+            --exclude="venv/" \
+            --delete \
+            -e "ssh -i ~/.ssh/my_rsync_key" \
+            . ${CDA_USER_NAME}@${CDA_HOST_NAME}:${CDA_TARGET_DIR}
+
+      - name: Create virtualenv & install dependencies on server
+        run: |
+          ssh -i ~/.ssh/my_rsync_key -o StrictHostKeyChecking=yes ${CDA_USER_NAME}@${CDA_HOST_NAME} << 'EOF'
+            set -e
+
+            APP_DIR="${CDA_TARGET_DIR}"
+            VENV_DIR="\$APP_DIR/trap-designer"
+
+            cd "\$APP_DIR"
+
+            # 1) Virtualenv erstellen, falls noch nicht vorhanden
+            if [ ! -d "\$VENV_DIR" ]; then
+              python3 -m venv "\$VENV_DIR"
+            fi
+
+            # 2) Virtualenv aktivieren und Abhängigkeiten installieren
+            source "\$VENV_DIR/bin/activate"
+            pip install --upgrade pip
+            pip install -r "\$APP_DIR/requirements.txt"
+          EOF
+
+      - name: Sync version file to trigger systemd path-unit
+        run: |
+          rsync -avz \
+            --include="mmft-spheroid-trap_version.txt" \
+            --exclude="*" \
+            -e "ssh -i ~/.ssh/my_rsync_key" \
+            mmft-spheroid-trap_version.txt ${CDA_USER_NAME}@${CDA_HOST_NAME}:${CDA_TARGET_DIR}
