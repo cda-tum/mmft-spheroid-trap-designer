@@ -104,3 +104,36 @@ jobs:
             --exclude="*" \
             -e "ssh -i ~/.ssh/my_rsync_key" \
             mmft-spheroid-trap_version.txt ${CDA_USER_NAME}@${CDA_HOST_NAME}:${CDA_TARGET_DIR}
+
+      
+      - name: Check service status on server
+        run: |
+          ssh -i ~/.ssh/my_rsync_key -o StrictHostKeyChecking=yes ${CDA_USER_NAME}@${CDA_HOST_NAME} << 'EOF'
+            echo "=== systemctl status mmft-spheroid-trap.service ==="
+            systemctl status mmft-spheroid-trap.service --no-pager || true
+            echo "==============================================="
+          EOF
+
+      - name: Show last journal logs for service
+        run: |
+          ssh -i ~/.ssh/my_rsync_key -o StrictHostKeyChecking=yes ${CDA_USER_NAME}@${CDA_HOST_NAME} << 'EOF'
+            echo "=== journalctl -u mmft-spheroid-trap.service (letzte 20 Zeilen) ==="
+            journalctl -u mmft-spheroid-trap.service -n20 --no-pager || true
+            echo "==============================================================="
+          EOF
+
+      - name: Retrieve /tmp/deploy-debug.log
+        run: |
+          ssh -i ~/.ssh/my_rsync_key -o StrictHostKeyChecking=yes ${CDA_USER_NAME}@${CDA_HOST_NAME} << 'EOF'
+            echo "=== Inhalt von /tmp/deploy-debug.log ==="
+            cat /tmp/deploy-debug.log 2>/dev/null || echo "(Datei nicht vorhanden oder leer)"
+            echo "========================================"
+          EOF
+
+      - name: Check listening ports on server
+        run: |
+          ssh -i ~/.ssh/my_rsync_key -o StrictHostKeyChecking=yes ${CDA_USER_NAME}@${CDA_HOST_NAME} << 'EOF'
+            echo "=== Offene TCP-Ports (grep 5002) ==="
+            ss -ltnp | grep :5002 || echo "(kein Prozess hört auf 5002)"
+            echo "===================================="
+          EOF
