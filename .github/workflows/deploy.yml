@@ -69,8 +69,7 @@ jobs:
 
       - name: Install deps & restart service
         run: |
-          ssh -i ~/.ssh/my_rsync_key -o StrictHostKeyChecking=yes \
-            ${CDA_USER_NAME}@${CDA_HOST_NAME} << 'EOF'
+          ssh -i ~/.ssh/my_rsync_key -o StrictHostKeyChecking=yes ${CDA_USER_NAME}@${CDA_HOST_NAME} << EOF
           cd ${CDA_TARGET_DIR}
           if [ -f venv/bin/activate ]; then
             source venv/bin/activate
