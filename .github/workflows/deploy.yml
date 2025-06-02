@@ -61,11 +61,7 @@ jobs:
 
       - name: Deploy via rsync
         run: |
-          rsync -avz \
-            --exclude=".git/" --exclude="venv/" \
-            --delete \
-            -e "ssh -i ~/.ssh/id_rsa" \
-            . ${CDA_USER_NAME}@${CDA_HOST_NAME}:${CDA_TARGET_DIR}
+          rsync -avz --exclude=".git/" --exclude="venv/" --delete -e "ssh -i ~/.ssh/id_rsa" . ${CDA_USER_NAME}@${CDA_HOST_NAME}:${CDA_TARGET_DIR}
 
       - name: Install deps & restart service
         run: |
