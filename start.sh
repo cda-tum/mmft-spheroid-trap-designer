@@ -12,4 +12,4 @@ source "$APP_DIR/trap-designer/bin/activate"
 cd "$APP_DIR"
 
 # Start Gunicorn
-gunicorn --preload --worker-class=gevent --worker-connections=1000 --workers 4 -t 1000 --bind 127.0.0.1:5002 'app:start_server()'
+python -m gunicorn --preload --worker-class=gevent --worker-connections=1000 --workers 4 -t 1000 --bind 127.0.0.1:5002 'app:start_server()'
