@@ -3,6 +3,8 @@
 # Absolute path to your repo (adjust if needed)
 APP_DIR="/var/www/cda/app/mmft-spheroid-trap-designer"
 
+echo "[DEBUG $(date +'%Y-%m-%dT%H:%M:%S')] start.sh wurde aufgerufen" >> /tmp/deploy-debug.log
+
 # Activate virtual environment
 source "$APP_DIR/trap-designer/bin/activate"
 
