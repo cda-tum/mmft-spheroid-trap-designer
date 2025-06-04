@@ -162,7 +162,7 @@ def calculate_channel_length_1D_network(spheroid_diameter: float, nr_of_traps: i
     # c_short = (c_trap * 1.5 + l_b + add_distance_c_trap)
     radius_channel = (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width) / 2
     c_short = (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
-    c_long = 0.5 * (l_a - c_short + 2 * radius_channel * (0.5 * math.pi - 1))
+    c_long = 0.5 * (l_a - c_short - 4 * radius_channel * (0.25 * math.pi - 1))
 
     required_space = 2 * luer_radius + 2 * radius_channel + (1 + 2 * nr_of_traps) * c_short
 
