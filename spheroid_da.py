@@ -51,7 +51,9 @@ def parameter_calculation(spheroid_diameter: float, l_b: float, w_I: float, w_b:
     P_0b = 24 * (1 - 1.3553 * alpha_b + 1.9467 * alpha_b**2 - 1.7012 * alpha_b**3 + 0.9564 * alpha_b**4 - 0.2537 * alpha_b**5)
 
     # l_a_max = 2 * 7005e-6 # + spheroid trap length - channel width - channel length loss due to rounding (for 15 x 15 chip)
-    radius_channel = max(spheroid_diameter * 2 - w_I/2, 80e-6) + (w_I) / 2 - math.sqrt((w_I / 2) ** 2 - (w_b / 2) ** 2) + w_I / 2 + l_b + 4/3 * spheroid_diameter
+    # radius_channel = max(spheroid_diameter * 2 - w_I/2, 80e-6) + (w_I) / 2 - math.sqrt((w_I / 2) ** 2 - (w_b / 2) ** 2) + w_I / 2 + l_b + 4/3 * spheroid_diameter
+    l_b_wo_overlap = l_b - 2 * (w_I / 2 - math.sqrt((w_I / 2) ** 2 - (w_b / 2) ** 2)) # this is the length of the channel without the overlap of the trap and the channel
+    radius_channel = max(spheroid_diameter * 2 - w_I/2, 80e-6) + (w_I) / 2 - math.sqrt((w_I / 2) ** 2 - (w_b / 2) ** 2) + w_I / 2 + l_b_wo_overlap + 4/3 * spheroid_diameter
     clamp_size = 1e-3
     distance_side = 1e-3
 
@@ -160,8 +162,10 @@ def calculate_channel_length_1D_network(spheroid_diameter: float, nr_of_traps: i
     # This is based on experimetal values and not theoretical values:
     c_trap = max(2 * spheroid_diameter - w_I/2, 80e-6) # The length of the trap should be approx. 2 times the diameter of the spheroid, we remove w_I/2 to account for the rounded end with the radius w_I/2
     # c_short = (c_trap * 1.5 + l_b + add_distance_c_trap)
-    radius_channel = (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width) / 2
-    c_short = (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
+    # radius_channel = (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width) / 2
+    radius_channel = (c_trap + radius_trap + l_b + channel_width) / 2
+    # c_short = (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
+    c_short = (c_trap + radius_trap + l_b + channel_width)
     c_long = 0.5 * (l_a - c_short - 4 * radius_channel * (0.25 * math.pi - 1))
 
     required_space = 2 * luer_radius + 2 * radius_channel + (1 + 2 * nr_of_traps) * c_short
@@ -225,8 +229,8 @@ def calculate_channel_length_1D_network(spheroid_diameter: float, nr_of_traps: i
     # print("add_distance_c_trap: ", add_distance_c_trap)
     # print("radius_channel: ", radius_channel)
     # print("channel_width: ", channel_width)
-    distance = nodes[-1][0] - radius_channel + 0.5 * (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
-    # print("distance: ", distance)
+    # distance = nodes[-1][0] - radius_channel + 0.5 * (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
+    distance = nodes[-1][0] - radius_channel + 0.5 * (c_trap + radius_trap + l_b + channel_width)
 
     nr_of_traps_node_gen = nr_of_traps
 
@@ -235,13 +239,17 @@ def calculate_channel_length_1D_network(spheroid_diameter: float, nr_of_traps: i
         mirrored_nodes.append(mirrored_node)
 
     while nr_of_traps_node_gen > 1:
-        distance += 0.5 * (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
+        # distance += 0.5 * (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
+        distance += 0.5 * (c_trap + radius_trap + l_b + channel_width)
+
 
         for node in nodes[8:10]:
             mirrored_node = mirror_nodes(node, distance)
             mirrored_nodes.append(mirrored_node)
 
-        distance += 0.5 * (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
+        # distance += 0.5 * (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
+        distance += 0.5 * (c_trap + radius_trap + l_b + channel_width)
+
 
         mirrored_node = mirror_nodes(nodes[10], distance)
         mirrored_nodes.append(mirrored_node)
@@ -259,7 +267,9 @@ def calculate_channel_length_1D_network(spheroid_diameter: float, nr_of_traps: i
     nodes.extend(mirrored_nodes)
 
     # Trap Nodes
-    trap_spacing = 2 * (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
+    # trap_spacing = 2 * (c_trap + add_distance_c_trap + radius_trap + l_b + channel_width)
+    trap_spacing = 2 * (c_trap + radius_trap + l_b + channel_width)
+
     for i in range(nr_of_traps):
         node_trap1 = node4.copy()
         node_trap1[0] += c_trap + add_distance_c_trap + channel_width/2 + trap_spacing * i
