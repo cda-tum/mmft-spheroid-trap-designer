@@ -133,7 +133,7 @@ def calculate_channel_length_1D_network(spheroid_diameter: float, nr_of_traps: i
     '''
     channel_width = 4/3 * spheroid_diameter
     channel_height = 4/3 * spheroid_diameter
-    l_b = 80e-6
+    l_b =90e-6
     # w_I = 4/3 * spheroid_diameter
     w_I = max(spheroid_diameter + 200e-6, 4/3 * spheroid_diameter)
     w_b = 0.5 * spheroid_diameter
