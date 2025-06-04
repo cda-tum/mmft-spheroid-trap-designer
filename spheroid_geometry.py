@@ -1219,7 +1219,7 @@ def define_luer_arcs(height: float, start: list, end: list, direction: list, num
 
     return triangles, corner_point, arc_points
 
-def add_luer_connections(luer_vertices: list, vertices: list, direction: list, numSegments: int, chip_height_top: float, luer_radius: float, luer_angle: float, channel_height: float, quad_list: list, nr_of_traps: int) -> tuple[list, list, list]:
+def add_luer_connections(luer_vertices: list, vertices: list, direction: list, numSegments: int, chip_height_top: float, luer_radius: float, luer_angle: float, channel_height: float, quad_list: list, nr_of_traps: int, unit_conversion_factor) -> tuple[list, list, list]:
     '''
     Creates the luer connections from the ground faces to the chip.
     Includes a cylinder for each luer connection to be able to connect the tubes for the luers.
@@ -1291,7 +1291,7 @@ def add_luer_connections(luer_vertices: list, vertices: list, direction: list, n
     via_corner_points.append(via_corner_points_3)
 
     # TODO maybe add unit conversion factor here
-    if via_radius != 1e-3: # The 4th arc goes the wrong direction if the spheroid_diameter is exactly 600 um, and subsequently the via_radius is 1e-3
+    if via_radius != 1e-3 and channel_height * 3/4 != 1e-3 * unit_conversion_factor: # The 4th arc goes the wrong direction if the spheroid_diameter is exactly 600 um, and subsequently the via_radius is 1e-3        
         direction2 = direction2 * (-1)
     
     # Arc 4
@@ -1559,9 +1559,9 @@ def create_stl_file(nodes: list, grounds: list, channels: list, arcs: list, heig
 
         # Add luer connections, here the grounds are the luer connections
         luer_direction = [-1, 0, 0]
-        luer_triangles_connection_inlet, via_bottom_triangles_1, luer_corner_points_inlet, via_corner_points_inlet = add_luer_connections(ground_vertices[0], vertices, luer_direction, num_segments, chip_thickness, luer_radius, luer_angle, channel_height, quad_list, nr_of_traps)
+        luer_triangles_connection_inlet, via_bottom_triangles_1, luer_corner_points_inlet, via_corner_points_inlet = add_luer_connections(ground_vertices[0], vertices, luer_direction, num_segments, chip_thickness, luer_radius, luer_angle, channel_height, quad_list, nr_of_traps, unit_conversion_factor)
         luer_direction = [1, 0, 0]
-        luer_triangles_connection_outlet, via_bottom_triangles_2, luer_corner_points_outlet, via_corner_points_outlet = add_luer_connections(ground_vertices[1], vertices, luer_direction, num_segments, chip_thickness, luer_radius, luer_angle, channel_height, quad_list, nr_of_traps)
+        luer_triangles_connection_outlet, via_bottom_triangles_2, luer_corner_points_outlet, via_corner_points_outlet = add_luer_connections(ground_vertices[1], vertices, luer_direction, num_segments, chip_thickness, luer_radius, luer_angle, channel_height, quad_list, nr_of_traps, unit_conversion_factor)
         luer_triangles_connection = luer_triangles_connection_inlet + luer_triangles_connection_outlet
         luer_corner_points = luer_corner_points_inlet + luer_corner_points_outlet
         corner_points_via = via_corner_points_inlet + via_corner_points_outlet
