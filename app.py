@@ -66,7 +66,12 @@ def compute():
     stl_path = os.path.join(output_dir, 'output3D.stl')
     json_path = os.path.join(output_dir, 'gui_test.json')
 
-    Q_ab = spheroid_all.run(spheroid_diameter, mini_luer=True, nr_of_traps=nr_of_traps, channel_negative=channel_negative, svg_output_file=svg_path, dxf_output_file=dxf_path, stl_output_file=stl_path, filename=json_path)
+    mini_luer = True  # Default to mini-Luer
+    mini_luer_diameter = 1.32e-3 # Diameter of the mini-Luer in meters
+    if spheroid_diameter * 4/3 * 1.25 > mini_luer_diameter:
+        mini_luer = False
+
+    Q_ab = spheroid_all.run(spheroid_diameter, mini_luer, nr_of_traps=nr_of_traps, channel_negative=channel_negative, svg_output_file=svg_path, dxf_output_file=dxf_path, stl_output_file=stl_path, filename=json_path)
 
     # Confirm the SVG file was created
     # svg_path = os.path.join(app.static_folder, 'output2D.svg')

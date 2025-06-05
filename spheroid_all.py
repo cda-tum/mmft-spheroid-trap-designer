@@ -14,6 +14,9 @@ def run(spheroid_diameter, mini_luer, nr_of_traps, channel_negative, svg_output_
 if __name__ == '__main__':
     spheroid_diameter = 800e-6 # This needs to be smaller than the luer diameter/1.25
     mini_luer = True # Do you want mini-Luers or regular Luers
+    mini_luer_diameter = 1.32e-3 # Diameter of the mini-Luer in meters
+    if spheroid_diameter * 4/3 * 1.25 > mini_luer_diameter:
+        mini_luer = False # If the channel_width is larger than the luer diameter / 1.25, we cannot use mini-Luers
     nr_of_traps = 1 # How many traps do you want in serie
     channel_negative = True # Negative = channel cut extruded in a chip, positive = channel only for sims
 
