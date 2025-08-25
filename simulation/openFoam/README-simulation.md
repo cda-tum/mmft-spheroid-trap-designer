@@ -15,7 +15,7 @@ Before proceeding, ensure that **OpenFOAM** is installed on your system. Install
   ```sh
   /simulation/openFoam/constant/geometry
   ```
-- Rename the STL file to ``` trap.stl ```
+- Rename the STL file to ``` trap.stl ```.
 - Modify the **vertices** in the **blockMeshDict** file to ensure the mesh properly fits around your geometry:  
   ```sh
   /simulation/openFoam/system/blockMeshDict
