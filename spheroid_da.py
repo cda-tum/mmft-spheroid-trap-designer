@@ -30,7 +30,7 @@ def parameter_calculation(spheroid_diameter: float, l_b: float, w_I: float, w_b:
 
     Q_ab_max = 0.25
 
-    K = If(w_I / h < 0.33,
+    K = If(w_b / h < 0.33,
             10.15,
             9.70 + 18 * (w_b / h) ** 1.1 # technically this only holds true for 0.33 < (w_b / h) < 0.8
             )
