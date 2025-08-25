@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Version:  11
+    \\  /    A nd           | Version:  12
      \\/     M anipulation  |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -25,40 +25,21 @@ geometry
 	{
 		type 	triSurfaceMesh;
 		file 	"../../../interface/files/output3D.stl";
+        scale 0.001;  // Convert mm → m
 		regions
 		{
-			walls
+			patch0
 			{
 				name walls;
 			}
-			inlet
-			{
-				name inlet;
-			}
-			// inflow2
-			// {
-			// 	name inlet2;
-			// }
-			outlet
-			{
-				name outlet;
-			}
-			// outflow2
-			// {
-			// 	name outlet2;
-			// }
-			// outflow3
-			// {
-			// 	name outlet3;
-			// }
 		}
 	}
 
 	boundingBox
 	{
 		type 	searchableBox;	// region defined by bounding box
-		min 	(-0.0000 -0.0014 -0.0001);
-		max 	( 0.015  0.015  0.0006);
+		min 	( 0.003  0 0.0);
+		max 	( 0.0115  0.015  0.004);
 	}
 };
 
@@ -169,7 +150,9 @@ castellatedMeshControls
     // NOTE: This point should never be on a face, always inside a cell, even
     // after refinement.
     // locationInMesh (0.0028 0.0100 0.0);
-    locationInMesh (5e-3 7.5e-3 3e-4);
+    locationInMesh (0.004 0.0075 0.0002);
+
+    preservePatches (inlet outlet);
 
 
     // Whether any faceZones (as specified in the refinementSurfaces)

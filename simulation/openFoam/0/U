@@ -13,37 +13,20 @@
 
     boundaryField
     {
-        allBoundary
-        {
-            type            noSlip;
-        }
         walls
         {
             type            noSlip;
         }
         inlet
         {
-            // type                flowRateInletVelocity;
-            // volumetricFlowRate  1e-5;
-            // extrapolateProfile  true;
-            type            fixedValue;
-            value           uniform (1e-3 0 0);
+            type                flowRateInletVelocity;
+            volumetricFlowRate  1.667e-9;
+            extrapolateProfile  true;
         }
 
         outlet
         {
-            type            fixedValue;
-            value           uniform (1e-3 0 0);
+            type zeroGradient;
         }
-
-        // walls
-        // {
-        //     type            noSlip;
-        // }
-
-        // geometry // maybe change this to top and bottom, or remove it
-        // {
-        //     type            noSlip;
-        // }
     }
     

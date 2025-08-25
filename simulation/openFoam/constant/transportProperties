@@ -9,5 +9,5 @@
     }
 
     transportModel  Newtonian;
-    nu              [ 0 2 -1 0 0 0 0 ] 1e-06; // maybe change to: nu [0 2 -1 0 0 0 0] 9.327983951855567e-7;
+    nu              [ 0 2 -1 0 0 0 0 ] 1e-06; 
     
