@@ -66,14 +66,12 @@ This will generate the computational mesh and simulate fluid flow within your cu
 
 ### COMSOL
 
-The comsol simulation files are uploaded in the simulation folder.
+The comsol simulation files are uploaded in the simulation folder. You can change the simulation paremeters via COMSOL's GUI.
 
-#### stationary model
-- Run the stationary study to simulate the fluid flow.
-#### transient model
-- First run the stationary study to initialize and then the transient study to simulate the spheroid's trajectory.
-
-You can change the simulation paremeters via COMSOL's GUI.
+#### Stationary model
+Run the stationary study to simulate the fluid flow.
+#### Transient model
+First run the stationary study to initialize and then the transient study to simulate the spheroid's trajectory.
 
 ## References
 
